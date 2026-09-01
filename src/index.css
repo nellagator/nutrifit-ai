@@ -1,5 +1,28 @@
 @import "tailwindcss";
 
+/*
+============================================================
+NUTRIFIT AI - TAILWIND DARK MODE CONFIGURATION
+============================================================
+
+Tailwind CSS v4 does not automatically use the .dark class
+for dark: utilities unless we tell it to.
+
+Our ThemeContext adds/removes .dark on <html>.
+
+This line tells Tailwind:
+
+"When an element is inside .dark, activate dark: classes."
+*/
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+============================================================
+GLOBAL RESET
+============================================================
+*/
+
 * {
   box-sizing: border-box;
 }
@@ -9,8 +32,77 @@ body,
 #root {
   margin: 0;
   min-height: 100%;
+  width: 100%;
 }
 
+/*
+============================================================
+BODY
+============================================================
+*/
+
 body {
-	font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  min-width: 320px;
+}
+
+/*
+============================================================
+LIGHT MODE
+============================================================
+*/
+
+html:not(.dark) {
+  color-scheme: light;
+}
+
+/*
+============================================================
+DARK MODE
+============================================================
+*/
+
+html.dark {
+  color-scheme: dark;
+}
+
+/*
+============================================================
+SMOOTH THEME TRANSITION
+============================================================
+*/
+
+html,
+body,
+#root,
+#root * {
+  transition-property:
+    background-color,
+    border-color,
+    color,
+    fill,
+    stroke,
+    box-shadow;
+  transition-duration: 300ms;
+  transition-timing-function: ease;
+}
+
+/*
+============================================================
+THEME TRANSITION
+============================================================
+*/
+
+html.theme-transition,
+html.theme-transition body,
+html.theme-transition #root,
+html.theme-transition #root * {
+  transition:
+    background-color 300ms ease,
+    border-color 300ms ease,
+    color 300ms ease,
+    fill 300ms ease,
+    stroke 300ms ease,
+    box-shadow 300ms ease !important;
 }

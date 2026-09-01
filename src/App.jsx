@@ -1,6 +1,10 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
-// Authentication pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -9,7 +13,6 @@ import VerifyRegistration from "./pages/VerifyRegistration";
 import Verified from "./pages/Verified";
 import Unverified from "./pages/Unverified";
 
-// Main application pages
 import Dashboard from "./pages/Dashboard";
 import FoodScanner from "./pages/FoodScanner";
 import Workouts from "./pages/Workouts";
@@ -17,112 +20,117 @@ import AICoach from "./pages/AICoach";
 import Progress from "./pages/Progress";
 import Profile from "./pages/Profile";
 
-function App() {
+import { ThemeProvider } from "./context/ThemeContext";
+
+export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
+    <ThemeProvider>
 
-        {/* ============================================================
-            DEFAULT ROUTE
-        ============================================================ */}
-        <Route
-          path="/"
-          element={<Navigate to="/login" replace />}
-        />
+      <BrowserRouter>
 
-        {/* ============================================================
-            AUTHENTICATION
-        ============================================================ */}
+        <Routes>
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+          {/* ==================================================
+              AUTHENTICATION
+          ================================================== */}
 
-        <Route
-          path="/register"
-          element={<Register />}
-        />
+          <Route
+            path="/"
+            element={
+              <Navigate
+                to="/login"
+                replace
+              />
+            }
+          />
 
-        <Route
-          path="/forgot-password"
-          element={<ForgotPassword />}
-        />
+          <Route
+            path="/login"
+            element={<Login />}
+          />
 
-        {/* Forgot Password OTP */}
-        <Route
-          path="/verify-otp"
-          element={<VerifyOTP />}
-        />
+          <Route
+            path="/register"
+            element={<Register />}
+          />
 
-        {/* Registration Email OTP */}
-        <Route
-          path="/verify-registration"
-          element={<VerifyRegistration />}
-        />
+          <Route
+            path="/forgot-password"
+            element={<ForgotPassword />}
+          />
 
-        <Route
-          path="/verified"
-          element={<Verified />}
-        />
+          <Route
+            path="/verify-otp"
+            element={<VerifyOTP />}
+          />
 
-        <Route
-          path="/unverified"
-          element={<Unverified />}
-        />
+          <Route
+            path="/verify-registration"
+            element={<VerifyRegistration />}
+          />
 
-        {/* ============================================================
-            MAIN APPLICATION
-        ============================================================ */}
+          <Route
+            path="/verified"
+            element={<Verified />}
+          />
 
-        {/* Dashboard */}
-        <Route
-          path="/dashboard"
-          element={<Dashboard />}
-        />
+          <Route
+            path="/unverified"
+            element={<Unverified />}
+          />
 
-        {/* Food Scanner */}
-        <Route
-          path="/food-scanner"
-          element={<FoodScanner />}
-        />
+          {/* ==================================================
+              APPLICATION
+          ================================================== */}
 
-        {/* Workouts */}
-        <Route
-          path="/workouts"
-          element={<Workouts />}
-        />
+          <Route
+            path="/dashboard"
+            element={<Dashboard />}
+          />
 
-        {/* AI Coach */}
-        <Route
-          path="/ai-coach"
-          element={<AICoach />}
-        />
+          <Route
+            path="/food-scanner"
+            element={<FoodScanner />}
+          />
 
-        {/* Progress */}
-        <Route
-          path="/progress"
-          element={<Progress />}
-        />
+          <Route
+            path="/workouts"
+            element={<Workouts />}
+          />
 
-        {/* Profile */}
-        <Route
-          path="/profile"
-          element={<Profile />}
-        />
+          <Route
+            path="/ai-coach"
+            element={<AICoach />}
+          />
 
-        {/* ============================================================
-            UNKNOWN ROUTES
-        ============================================================ */}
+          <Route
+            path="/progress"
+            element={<Progress />}
+          />
 
-        <Route
-          path="*"
-          element={<Navigate to="/dashboard" replace />}
-        />
+          <Route
+            path="/profile"
+            element={<Profile />}
+          />
 
-      </Routes>
-    </BrowserRouter>
+          {/* ==================================================
+              FALLBACK
+          ================================================== */}
+
+          <Route
+            path="*"
+            element={
+              <Navigate
+                to="/dashboard"
+                replace
+              />
+            }
+          />
+
+        </Routes>
+
+      </BrowserRouter>
+
+    </ThemeProvider>
   );
 }
-
-export default App;

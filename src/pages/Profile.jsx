@@ -1,285 +1,373 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
-  Home,
-  Camera,
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
+
+import {
+  Flame,
+  Footprints,
   Dumbbell,
-  Bot,
-  BarChart3,
-  User,
-  LogOut,
-  Bell,
-  Globe,
-  Ruler,
-  ChevronRight,
-  Target,
-  HeartPulse,
-  Utensils,
+  Trophy,
+  Weight,
 } from "lucide-react";
 
-export default function Profile() {
-  const navigate = useNavigate();
+import DashboardLayout from "../components/DashboardLayout";
 
-  const [notifications, setNotifications] = useState(true);
-
-  const menuItems = [
-    { name: "Dashboard", icon: Home, path: "/dashboard" },
-    { name: "Food Scanner", icon: Camera, path: "/food-scanner" },
-    { name: "Workouts", icon: Dumbbell, path: "/workouts" },
-    { name: "AI Coach", icon: Bot, path: "/ai-coach" },
-    { name: "Progress", icon: BarChart3, path: "/progress" },
-    { name: "Profile", icon: User, path: "/profile" },
-  ];
-
+export default function Progress() {
   return (
-    <div className="flex min-h-screen bg-[#1c1c1c] p-2">
-      {/* SIDEBAR */}
-      <aside className="flex w-[195px] flex-col rounded-l-lg bg-white shadow-md">
-        <div className="flex items-center gap-2 px-4 py-5">
-          <img
-            src="/nutrifit-logo.png"
-            alt="NutriFit AI"
-            className="h-9 w-9 object-contain"
+    <DashboardLayout>
+
+      {/* =====================================================
+          THIS WEEK
+      ===================================================== */}
+
+      <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-[#222222]">
+
+        <h2 className="text-lg font-bold">
+          My Progress
+        </h2>
+
+        <div className="mt-4 grid grid-cols-4 gap-3">
+
+          <ProgressCard
+            title="Calories"
+            value="13,850"
+            subtitle="kcal this week"
           />
 
-          <span className="text-xl font-bold text-[#4CAF2F]">
-            NutriFit AI
-          </span>
+          <ProgressCard
+            title="Workouts"
+            value="5"
+            subtitle="sessions"
+          />
+
+          <ProgressCard
+            title="Steps"
+            value="58,420"
+            subtitle="steps"
+          />
+
+          <ProgressCard
+            title="Streak"
+            value="7"
+            subtitle="days"
+          />
+
         </div>
 
-        <nav className="mt-7 flex flex-1 flex-col gap-2 px-2">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
+      </section>
 
-            return (
-              <button
-                key={item.name}
-                onClick={() => navigate(item.path)}
-                className={`flex items-center gap-3 rounded-md px-4 py-2.5 text-sm font-semibold ${
-                  item.name === "Profile"
-                    ? "border-l-2 border-[#4CAF2F] bg-[#dcffcc] text-[#4CAF2F]"
-                    : "text-gray-400 hover:bg-gray-100 hover:text-[#4CAF2F]"
-                }`}
-              >
-                <Icon size={19} />
-                {item.name}
-              </button>
-            );
-          })}
-        </nav>
+      {/* =====================================================
+          ANALYTICS
+      ===================================================== */}
 
-        <button
-          onClick={() => navigate("/login")}
-          className="mx-2 mb-4 flex items-center gap-3 rounded-md px-4 py-2.5 text-sm font-semibold text-red-500 hover:bg-red-50"
-        >
-          <LogOut size={19} />
-          Log Out
-        </button>
-      </aside>
+      <div className="mt-4 grid grid-cols-2 gap-4">
 
-      {/* MAIN */}
-      <main className="flex-1 overflow-auto rounded-r-lg bg-white p-5">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Profile</h1>
+        {/* ===================================================
+            MACRONUTRIENTS
+        =================================================== */}
 
-          <Bell size={21} className="text-gray-500" />
-        </div>
+        <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-[#222222]">
 
-        {/* PROFILE HEADER */}
-        <section className="mt-4 overflow-hidden rounded-lg">
-          <div className="flex items-center gap-5 bg-gradient-to-r from-green-700 to-green-400 p-5 text-white">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-200">
-              <User size={42} className="text-white" />
+          <h3 className="text-sm font-bold">
+            Macronutrient Distribution
+          </h3>
+
+          <div className="mt-5 flex items-center justify-center">
+
+            <div className="relative flex h-36 w-36 items-center justify-center rounded-full border-[25px] border-green-500">
+
+              <div className="absolute inset-0 rounded-full border-[25px] border-blue-400 border-r-transparent border-b-transparent" />
+
+              <div className="absolute inset-0 rounded-full border-[25px] border-orange-400 border-l-transparent border-b-transparent" />
+
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-xs font-bold dark:bg-[#222222]">
+                100%
+              </div>
+
+            </div>
+
+          </div>
+
+          <div className="mt-5 grid grid-cols-3 gap-3 text-center text-xs">
+
+            <div>
+              <p className="font-bold text-green-500">
+                Protein
+              </p>
+              <p className="text-gray-500">
+                40%
+              </p>
             </div>
 
             <div>
-              <h2 className="text-xl font-bold">
-                John Lim
-              </h2>
-
-              <p className="text-xs">
-                johnlim@gmail.com
+              <p className="font-bold text-blue-500">
+                Carbs
               </p>
-
-              <p className="mt-1 text-xs">
-                Joined May 2024
+              <p className="text-gray-500">
+                45%
               </p>
             </div>
+
+            <div>
+              <p className="font-bold text-orange-400">
+                Fat
+              </p>
+              <p className="text-gray-500">
+                15%
+              </p>
+            </div>
+
           </div>
+
         </section>
 
-        {/* OVERVIEW */}
-        <section className="mt-4 rounded-xl border p-4 shadow-sm">
-          <h2 className="font-bold">My Overview</h2>
+        {/* ===================================================
+            WEIGHT PROGRESS
+        =================================================== */}
 
-          <div className="mt-3 grid grid-cols-4 gap-3">
-            <Overview
-              icon={<Ruler />}
-              title="Height"
-              value="170 cm"
+        <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-[#222222]">
+
+          <div className="flex items-center gap-2">
+
+            <Weight
+              size={20}
+              className="text-[#4CAF2F]"
             />
 
-            <Overview
-              icon={<Utensils />}
-              title="Weight"
-              value="70 kg"
-            />
+            <h3 className="text-sm font-bold">
+              Weight Progress
+            </h3>
 
-            <Overview
-              icon={<HeartPulse />}
-              title="BMI"
-              value="24.2"
-              subtitle="Normal"
-            />
-
-            <Overview
-              icon={<Target />}
-              title="Goal"
-              value="Lose Weight"
-            />
-          </div>
-        </section>
-
-        {/* PLAN */}
-        <section className="mt-4 rounded-xl border shadow-sm">
-          <div className="border-b px-4 py-3 font-bold">
-            My Plan
           </div>
 
-          <ProfileRow
-            icon={<Target />}
-            title="Fitness Goal"
-            value="Lose Weight"
-          />
+          <div className="mt-6 flex items-end justify-between">
 
-          <ProfileRow
-            icon={<Utensils />}
-            title="Diet Preference"
-            value="High Protein"
-          />
+            <div>
 
-          <ProfileRow
-            icon={<Dumbbell />}
-            title="Activity Level"
-            value="Moderate"
-          />
+              <p className="text-3xl font-bold">
+                70 kg
+              </p>
 
-          <ProfileRow
-            icon={<HeartPulse />}
-            title="Health Conditions"
-            value="None"
-          />
-        </section>
+              <p className="mt-1 text-xs text-gray-500">
+                Current weight
+              </p>
 
-        {/* SETTINGS */}
-        <section className="mt-4 rounded-xl border shadow-sm">
-          <div className="border-b px-4 py-3 font-bold">
-            Settings
+            </div>
+
+            <p className="text-sm font-bold text-green-600">
+              ▼ 2.5 kg
+            </p>
+
           </div>
 
-          <ProfileRow
-            icon={<User />}
-            title="Personal Information"
-            value=""
-          />
+          <div className="mt-8 h-2 rounded-full bg-gray-200">
 
-          <div className="flex items-center gap-3 border-b px-4 py-3">
-            <Bell size={18} className="text-gray-400" />
+            <div className="h-2 w-[70%] rounded-full bg-[#4CAF2F]" />
 
-            <span className="flex-1 text-sm">
-              Notifications
+          </div>
+
+          <div className="mt-2 flex justify-between text-[10px] text-gray-500">
+
+            <span>
+              Starting: 72.5 kg
             </span>
 
-            <button
-              onClick={() =>
-                setNotifications(!notifications)
-              }
-              className={`relative h-5 w-9 rounded-full ${
-                notifications
-                  ? "bg-green-500"
-                  : "bg-gray-300"
-              }`}
-            >
-              <div
-                className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition ${
-                  notifications
-                    ? "left-[18px]"
-                    : "left-0.5"
-                }`}
-              />
-            </button>
+            <span>
+              Goal: 65 kg
+            </span>
+
           </div>
 
-          <ProfileRow
-            icon={<Ruler />}
-            title="Units"
-            value="Metric (kg, cm, km)"
-          />
-
-          <ProfileRow
-            icon={<Globe />}
-            title="Language"
-            value="English"
-          />
-
-          <button
-            onClick={() => navigate("/login")}
-            className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm font-semibold text-red-500 hover:bg-red-50"
-          >
-            <LogOut size={18} />
-            Logout
-          </button>
         </section>
-      </main>
-    </div>
-  );
-}
 
-function Overview({ icon, title, value, subtitle }) {
-  return (
-    <div className="rounded-lg border p-3">
-      <div className="flex items-center gap-2 text-green-600">
-        {icon}
-        <span className="text-xs font-semibold">
-          {title}
-        </span>
       </div>
 
-      <p className="mt-2 font-bold">{value}</p>
+      {/* =====================================================
+          CALORIE TREND
+      ===================================================== */}
 
-      {subtitle && (
-        <p className="text-xs text-green-600">
-          {subtitle}
-        </p>
-      )}
+      <section className="mt-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-[#222222]">
+
+        <div className="flex items-center justify-between">
+
+          <h3 className="text-sm font-bold">
+            Calories Trend
+          </h3>
+
+          <p className="text-xs text-gray-500">
+            Average: 1718 kcal
+          </p>
+
+        </div>
+
+        <div className="mt-3 h-48">
+
+          <ResponsiveContainer
+            width="100%"
+            height="100%"
+          >
+
+            <AreaChart data={calorieData}>
+
+              <CartesianGrid
+                stroke="#e5e7eb"
+                vertical={false}
+              />
+
+              <XAxis
+                dataKey="day"
+                tick={{
+                  fontSize: 10,
+                  fill: "#64748b",
+                }}
+                axisLine={false}
+                tickLine={false}
+              />
+
+              <YAxis
+                tick={{
+                  fontSize: 10,
+                  fill: "#64748b",
+                }}
+                axisLine={false}
+                tickLine={false}
+              />
+
+              <Tooltip />
+
+              <Area
+                type="monotone"
+                dataKey="calories"
+                stroke="#00d91c"
+                fill="#c9f9ce"
+                strokeWidth={2}
+              />
+
+            </AreaChart>
+
+          </ResponsiveContainer>
+
+        </div>
+
+      </section>
+
+      {/* =====================================================
+          ACHIEVEMENTS
+      ===================================================== */}
+
+      <section className="mt-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-[#222222]">
+
+        <h3 className="text-sm font-bold">
+          Achievements
+        </h3>
+
+        <div className="mt-3 grid grid-cols-4 gap-3">
+
+          <Achievement
+            icon={<Flame />}
+            title="7 Day Streak"
+          />
+
+          <Achievement
+            icon={<Trophy />}
+            title="Healthy Eater"
+          />
+
+          <Achievement
+            icon={<Footprints />}
+            title="Daily Steps"
+          />
+
+          <Achievement
+            icon={<Dumbbell />}
+            title="Workout Warrior"
+          />
+
+        </div>
+
+      </section>
+
+    </DashboardLayout>
+  );
+}
+
+/*
+============================================================
+PROGRESS CARD
+============================================================
+*/
+
+function ProgressCard({
+  title,
+  value,
+  subtitle,
+}) {
+  return (
+    <div className="rounded-lg border border-gray-200 p-3 dark:border-gray-700">
+
+      <p className="text-xs font-semibold text-gray-500">
+        {title}
+      </p>
+
+      <p className="mt-2 text-xl font-bold">
+        {value}
+      </p>
+
+      <p className="mt-1 text-[10px] text-gray-500">
+        {subtitle}
+      </p>
+
     </div>
   );
 }
 
-function ProfileRow({ icon, title, value }) {
+/*
+============================================================
+ACHIEVEMENT
+============================================================
+*/
+
+function Achievement({
+  icon,
+  title,
+}) {
   return (
-    <button
-      type="button"
-      className="flex w-full items-center gap-3 border-b px-4 py-3 text-left hover:bg-gray-50"
-    >
-      <span className="text-gray-400">
+    <div className="flex flex-col items-center rounded-lg border border-gray-200 p-4 text-center dark:border-gray-700">
+
+      <div className="text-[#4CAF2F]">
         {icon}
-      </span>
+      </div>
 
-      <span className="flex-1 text-sm">
+      <p className="mt-2 text-xs font-semibold">
         {title}
-      </span>
+      </p>
 
-      {value && (
-        <span className="text-xs text-gray-500">
-          {value}
-        </span>
-      )}
+      <p className="mt-1 text-[9px] text-gray-500">
+        Achievement unlocked
+      </p>
 
-      <ChevronRight
-        size={16}
-        className="text-gray-400"
-      />
-    </button>
+    </div>
   );
 }
+
+/*
+============================================================
+CALORIE DATA
+============================================================
+*/
+
+const calorieData = [
+  { day: "Mon", calories: 1550 },
+  { day: "Tue", calories: 1720 },
+  { day: "Wed", calories: 1600 },
+  { day: "Thu", calories: 1710 },
+  { day: "Fri", calories: 1450 },
+  { day: "Sat", calories: 1900 },
+  { day: "Sun", calories: 1550 },
+];

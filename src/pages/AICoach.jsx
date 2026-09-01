@@ -1,36 +1,30 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import {
-  Home,
-  Camera,
-  Dumbbell,
   Bot,
-  BarChart3,
-  User,
-  LogOut,
   Send,
+  CheckCircle2,
 } from "lucide-react";
 
-export default function AICoach() {
-  const navigate = useNavigate();
+import DashboardLayout from "../components/DashboardLayout";
 
+export default function AICoach() {
   const [message, setMessage] = useState("");
 
   const [messages, setMessages] = useState([
     {
-      sender: "ai",
+      type: "ai",
       text: "Hi John! 👋 How can I help you today?",
     },
+    {
+      type: "user",
+      text: "What should I eat after my workout?",
+    },
+    {
+      type: "ai",
+      text: "A meal with protein and carbohydrates would be a great choice after your workout.",
+    },
   ]);
-
-  const menuItems = [
-    { name: "Dashboard", icon: Home, path: "/dashboard" },
-    { name: "Food Scanner", icon: Camera, path: "/food-scanner" },
-    { name: "Workouts", icon: Dumbbell, path: "/workouts" },
-    { name: "AI Coach", icon: Bot, path: "/ai-coach" },
-    { name: "Progress", icon: BarChart3, path: "/progress" },
-    { name: "Profile", icon: User, path: "/profile" },
-  ];
 
   const sendMessage = () => {
     if (!message.trim()) return;
@@ -38,135 +32,171 @@ export default function AICoach() {
     setMessages((current) => [
       ...current,
       {
-        sender: "user",
+        type: "user",
         text: message,
+      },
+      {
+        type: "ai",
+        text: "That's a great question! I'll help you make a healthy choice based on your goals.",
       },
     ]);
 
-    const currentMessage = message;
     setMessage("");
-
-    {/* TEMPORARY REPLIES */}
-
-    setTimeout(() => {
-      setMessages((current) => [
-        ...current,
-        {
-          sender: "ai",
-          text: `Based on your goal, I'd recommend making a balanced choice. Tell me more about "${currentMessage}" and I can give you a more specific recommendation.`,
-        },
-      ]);
-    }, 700);
   };
 
   return (
-    <div className="flex min-h-screen bg-[#1c1c1c] p-2">
-      {/* SIDEBAR */}
-      <aside className="flex w-[195px] flex-col rounded-l-lg bg-white shadow-md">
-        <div className="flex items-center gap-2 px-4 py-5">
-          <img
-            src="/nutrifit-logo.png"
-            alt="NutriFit AI"
-            className="h-9 w-9 object-contain"
-          />
+    <DashboardLayout>
 
-          <span className="text-xl font-bold text-[#4CAF2F]">
-            NutriFit AI
-          </span>
+      <div className="mx-auto flex h-[calc(100vh-150px)] max-w-4xl flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-[#222222]">
+
+        {/* ===================================================
+            CHAT HEADER
+        =================================================== */}
+
+        <div className="flex items-center gap-3 border-b border-gray-200 p-4 dark:border-gray-700">
+
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#dcffcc] text-[#4CAF2F]">
+            <Bot size={22} />
+          </div>
+
+          <div>
+
+            <h2 className="text-sm font-bold">
+              NutriFit AI
+            </h2>
+
+            <p className="text-[10px] text-gray-500">
+              Your personal nutrition coach
+            </p>
+
+          </div>
+
         </div>
 
-        <nav className="mt-7 flex flex-1 flex-col gap-2 px-2">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
+        {/* ===================================================
+            CHAT MESSAGES
+        =================================================== */}
 
-            return (
-              <button
-                key={item.name}
-                onClick={() => navigate(item.path)}
-                className={`flex items-center gap-3 rounded-md px-4 py-2.5 text-sm font-semibold ${
-                  item.name === "AI Coach"
-                    ? "border-l-2 border-[#4CAF2F] bg-[#dcffcc] text-[#4CAF2F]"
-                    : "text-gray-400 hover:bg-gray-100 hover:text-[#4CAF2F]"
-                }`}
-              >
-                <Icon size={19} />
-                {item.name}
-              </button>
-            );
-          })}
-        </nav>
+        <div className="flex-1 space-y-4 overflow-y-auto p-5">
 
-        <button
-          onClick={() => navigate("/login")}
-          className="mx-2 mb-4 flex items-center gap-3 rounded-md px-4 py-2.5 text-sm font-semibold text-red-500 hover:bg-red-50"
-        >
-          <LogOut size={19} />
-          Log Out
-        </button>
-      </aside>
-
-      {/* CHAT */}
-      <main className="flex flex-1 flex-col overflow-hidden rounded-r-lg bg-white">
-        {/* HEADER */}
-        <header className="flex h-14 items-center justify-center border-b">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-purple-300">
-              <Bot size={18} className="text-purple-500" />
-            </div>
-
-            <span className="font-bold">Nori AI</span>
-          </div>
-        </header>
-
-        {/* MESSAGES */}
-        <div className="flex-1 space-y-4 overflow-auto p-6">
-          {messages.map((item, index) => (
+          {messages.map((message, index) => (
             <div
               key={index}
-              className={`flex ${
-                item.sender === "user"
-                  ? "justify-end"
-                  : "justify-start"
-              }`}
+              className={`
+                flex
+                ${
+                  message.type === "user"
+                    ? "justify-end"
+                    : "justify-start"
+                }
+              `}
             >
+
               <div
-                className={`max-w-[65%] whitespace-pre-line rounded-xl px-4 py-3 text-sm ${
-                  item.sender === "user"
-                    ? "bg-green-600 text-white"
-                    : "bg-gray-100 text-gray-700"
-                }`}
+                className={`
+                  max-w-[70%]
+                  rounded-xl
+                  px-4
+                  py-3
+                  text-sm
+
+                  ${
+                    message.type === "user"
+                      ? "bg-[#4CAF2F] text-white"
+                      : "bg-gray-100 text-gray-700 dark:bg-[#333333] dark:text-gray-200"
+                  }
+                `}
               >
-                {item.text}
+                {message.text}
               </div>
+
             </div>
           ))}
+
+          {/* Example recommendation */}
+
+          <div className="max-w-md rounded-lg bg-[#f0faeb] p-4 dark:bg-[#253522]">
+
+            <p className="text-xs font-bold text-[#4CAF2F]">
+              Suggested after-workout meal
+            </p>
+
+            <div className="mt-3 space-y-2">
+
+              <Recommendation text="Grilled chicken" />
+              <Recommendation text="Brown rice" />
+              <Recommendation text="Vegetables" />
+              <Recommendation text="Water" />
+
+            </div>
+
+          </div>
+
         </div>
 
-        {/* INPUT */}
-        <div className="border-t p-4">
-          <div className="mx-auto flex max-w-3xl items-center gap-2 rounded-xl border px-3 py-2">
+        {/* ===================================================
+            MESSAGE INPUT
+        =================================================== */}
+
+        <div className="border-t border-gray-200 p-4 dark:border-gray-700">
+
+          <div className="flex items-center gap-2 rounded-full border border-gray-300 px-4 py-2 dark:border-gray-600">
+
             <input
               type="text"
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
+              onChange={(event) =>
+                setMessage(event.target.value)
+              }
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
                   sendMessage();
                 }
               }}
-              placeholder="Type a message..."
-              className="flex-1 bg-transparent text-sm outline-none"
+              placeholder="Type your message..."
+              className="
+                flex-1
+                bg-transparent
+                text-sm
+                outline-none
+              "
             />
 
             <button
+              type="button"
               onClick={sendMessage}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-green-600 text-white hover:bg-green-700"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-[#4CAF2F] text-white"
             >
-              <Send size={17} />
+              <Send size={15} />
             </button>
+
           </div>
+
         </div>
-      </main>
+
+      </div>
+
+    </DashboardLayout>
+  );
+}
+
+/*
+============================================================
+RECOMMENDATION
+============================================================
+*/
+
+function Recommendation({ text }) {
+  return (
+    <div className="flex items-center gap-2 text-xs">
+
+      <CheckCircle2
+        size={14}
+        className="text-[#4CAF2F]"
+      />
+
+      {text}
+
     </div>
   );
 }

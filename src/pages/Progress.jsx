@@ -1,257 +1,202 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+
 import {
-  Home,
-  Camera,
-  Dumbbell,
   Bot,
-  BarChart3,
-  User,
-  LogOut,
-  Flame,
-  Footprints,
-  Trophy,
+  Send,
+  CheckCircle2,
 } from "lucide-react";
 
-export default function Progress() {
-  const navigate = useNavigate();
+import DashboardLayout from "../components/DashboardLayout";
 
-  const menuItems = [
-    { name: "Dashboard", icon: Home, path: "/dashboard" },
-    { name: "Food Scanner", icon: Camera, path: "/food-scanner" },
-    { name: "Workouts", icon: Dumbbell, path: "/workouts" },
-    { name: "AI Coach", icon: Bot, path: "/ai-coach" },
-    { name: "Progress", icon: BarChart3, path: "/progress" },
-    { name: "Profile", icon: User, path: "/profile" },
-  ];
+export default function AICoach() {
+  const [message, setMessage] = useState("");
+
+  const [messages, setMessages] = useState([
+    {
+      type: "ai",
+      text: "Hi John! 👋 How can I help you today?",
+    },
+    {
+      type: "user",
+      text: "What should I eat after my workout?",
+    },
+    {
+      type: "ai",
+      text: "A meal with protein and carbohydrates would be a great choice after your workout.",
+    },
+  ]);
+
+  const sendMessage = () => {
+    if (!message.trim()) return;
+
+    setMessages((current) => [
+      ...current,
+      {
+        type: "user",
+        text: message,
+      },
+      {
+        type: "ai",
+        text: "That's a great question! I'll help you make a healthy choice based on your goals.",
+      },
+    ]);
+
+    setMessage("");
+  };
 
   return (
-    <div className="flex min-h-screen bg-[#1c1c1c] p-2">
-      {/* SIDEBAR */}
-      <aside className="flex w-[195px] flex-col rounded-l-lg bg-white shadow-md">
-        <div className="flex items-center gap-2 px-4 py-5">
-          <img
-            src="/nutrifit-logo.png"
-            alt="NutriFit AI"
-            className="h-9 w-9 object-contain"
-          />
+    <DashboardLayout>
 
-          <span className="text-xl font-bold text-[#4CAF2F]">
-            NutriFit AI
-          </span>
-        </div>
+      <div className="mx-auto flex h-[calc(100vh-150px)] max-w-4xl flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-[#222222]">
 
-        <nav className="mt-7 flex flex-1 flex-col gap-2 px-2">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
+        {/* ===================================================
+            CHAT HEADER
+        =================================================== */}
 
-            return (
-              <button
-                key={item.name}
-                onClick={() => navigate(item.path)}
-                className={`flex items-center gap-3 rounded-md px-4 py-2.5 text-sm font-semibold ${
-                  item.name === "Progress"
-                    ? "border-l-2 border-[#4CAF2F] bg-[#dcffcc] text-[#4CAF2F]"
-                    : "text-gray-400 hover:bg-gray-100 hover:text-[#4CAF2F]"
-                }`}
-              >
-                <Icon size={19} />
-                {item.name}
-              </button>
-            );
-          })}
-        </nav>
+        <div className="flex items-center gap-3 border-b border-gray-200 p-4 dark:border-gray-700">
 
-        <button
-          onClick={() => navigate("/login")}
-          className="mx-2 mb-4 flex items-center gap-3 rounded-md px-4 py-2.5 text-sm font-semibold text-red-500 hover:bg-red-50"
-        >
-          <LogOut size={19} />
-          Log Out
-        </button>
-      </aside>
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#dcffcc] text-[#4CAF2F]">
+            <Bot size={22} />
+          </div>
 
-      {/* MAIN */}
-      <main className="flex-1 overflow-auto rounded-r-lg bg-white p-5">
-        <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">My Progress</h1>
 
-            <p className="mt-1 text-sm text-gray-500">
-              Track your health and fitness progress.
-            </p>
-          </div>
-
-          <div className="rounded-lg border p-2">
-            📅
-          </div>
-        </div>
-
-        {/* PERIOD */}
-        <div className="mt-5 flex gap-2">
-          {["Week", "Month", "3 Months", "Year"].map(
-            (period, index) => (
-              <button
-                key={period}
-                className={`rounded-md px-4 py-2 text-xs font-semibold ${
-                  index === 0
-                    ? "bg-green-600 text-white"
-                    : "bg-gray-100 text-gray-500"
-                }`}
-              >
-                {period}
-              </button>
-            )
-          )}
-        </div>
-
-        {/* STATS */}
-        <div className="mt-5 grid grid-cols-4 gap-3">
-          <StatCard
-            icon={<Flame />}
-            title="Calories"
-            value="13,850"
-            subtitle="kcal"
-          />
-
-          <StatCard
-            icon={<Dumbbell />}
-            title="Workouts"
-            value="5 / 6"
-            subtitle="sessions"
-          />
-
-          <StatCard
-            icon={<Footprints />}
-            title="Steps"
-            value="58,420"
-            subtitle="steps"
-          />
-
-          <StatCard
-            icon={<Flame />}
-            title="Streak"
-            value="7"
-            subtitle="Days"
-          />
-        </div>
-
-        {/* CONTENT */}
-        <div className="mt-4 grid grid-cols-2 gap-4">
-          {/* CALORIE TREND */}
-          <section className="rounded-xl border p-4 shadow-sm">
-            <h2 className="font-bold">Calories Trend</h2>
-
-            <div className="mt-5 flex h-52 items-end gap-4 rounded-lg bg-gray-50 p-5">
-              {[55, 65, 58, 68, 55, 78, 65].map(
-                (height, index) => (
-                  <div
-                    key={index}
-                    className="flex flex-1 items-end"
-                  >
-                    <div
-                      className="w-full rounded-t-md bg-green-500"
-                      style={{ height: `${height}%` }}
-                    />
-                  </div>
-                )
-              )}
-            </div>
-          </section>
-
-          {/* MACROS */}
-          <section className="rounded-xl border p-4 shadow-sm">
-            <h2 className="font-bold">
-              Macronutrient Distribution
+            <h2 className="text-sm font-bold">
+              NutriFit AI
             </h2>
 
-            <div className="mt-6 flex items-center justify-center">
-              <div className="flex h-40 w-40 items-center justify-center rounded-full border-[25px] border-green-500">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white text-sm font-bold">
-                  Macros
-                </div>
-              </div>
-            </div>
+            <p className="text-[10px] text-gray-500">
+              Your personal nutrition coach
+            </p>
 
-            <div className="mt-5 flex justify-center gap-5 text-xs">
-              <span>🟢 Protein 35%</span>
-              <span>🔵 Carbs 45%</span>
-              <span>🟠 Fats 20%</span>
-            </div>
-          </section>
+          </div>
 
-          {/* WEIGHT */}
-          <section className="rounded-xl border p-4 shadow-sm">
-            <h2 className="font-bold">Weight Progress</h2>
-
-            <div className="mt-4">
-              <span className="text-2xl font-bold">70 kg</span>
-
-              <span className="ml-2 text-sm text-green-600">
-                ▼ 2.5 kg
-              </span>
-            </div>
-
-            <div className="mt-6 h-2 rounded-full bg-green-500" />
-          </section>
-
-          {/* ACHIEVEMENTS */}
-          <section className="rounded-xl border p-4 shadow-sm">
-            <div className="flex items-center justify-between">
-              <h2 className="font-bold">Achievements</h2>
-
-              <button className="text-xs font-semibold text-green-600">
-                View All
-              </button>
-            </div>
-
-            <div className="mt-4 grid grid-cols-3 gap-3">
-              <Achievement
-                icon={<Flame />}
-                title="7 Day Streak"
-              />
-
-              <Achievement
-                icon={<Trophy />}
-                title="Healthy Eater"
-              />
-
-              <Achievement
-                icon={<Dumbbell />}
-                title="Workout Warrior"
-              />
-            </div>
-          </section>
         </div>
-      </main>
-    </div>
+
+        {/* ===================================================
+            CHAT MESSAGES
+        =================================================== */}
+
+        <div className="flex-1 space-y-4 overflow-y-auto p-5">
+
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={`
+                flex
+                ${
+                  message.type === "user"
+                    ? "justify-end"
+                    : "justify-start"
+                }
+              `}
+            >
+
+              <div
+                className={`
+                  max-w-[70%]
+                  rounded-xl
+                  px-4
+                  py-3
+                  text-sm
+
+                  ${
+                    message.type === "user"
+                      ? "bg-[#4CAF2F] text-white"
+                      : "bg-gray-100 text-gray-700 dark:bg-[#333333] dark:text-gray-200"
+                  }
+                `}
+              >
+                {message.text}
+              </div>
+
+            </div>
+          ))}
+
+          {/* Example recommendation */}
+
+          <div className="max-w-md rounded-lg bg-[#f0faeb] p-4 dark:bg-[#253522]">
+
+            <p className="text-xs font-bold text-[#4CAF2F]">
+              Suggested after-workout meal
+            </p>
+
+            <div className="mt-3 space-y-2">
+
+              <Recommendation text="Grilled chicken" />
+              <Recommendation text="Brown rice" />
+              <Recommendation text="Vegetables" />
+              <Recommendation text="Water" />
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* ===================================================
+            MESSAGE INPUT
+        =================================================== */}
+
+        <div className="border-t border-gray-200 p-4 dark:border-gray-700">
+
+          <div className="flex items-center gap-2 rounded-full border border-gray-300 px-4 py-2 dark:border-gray-600">
+
+            <input
+              type="text"
+              value={message}
+              onChange={(event) =>
+                setMessage(event.target.value)
+              }
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  sendMessage();
+                }
+              }}
+              placeholder="Type your message..."
+              className="
+                flex-1
+                bg-transparent
+                text-sm
+                outline-none
+              "
+            />
+
+            <button
+              type="button"
+              onClick={sendMessage}
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-[#4CAF2F] text-white"
+            >
+              <Send size={15} />
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </DashboardLayout>
   );
 }
 
-function StatCard({ icon, title, value, subtitle }) {
+/*
+============================================================
+RECOMMENDATION
+============================================================
+*/
+
+function Recommendation({ text }) {
   return (
-    <div className="rounded-xl border p-4 shadow-sm">
-      <div className="flex items-center gap-2 text-green-600">
-        {icon}
-        <span className="text-sm font-semibold">{title}</span>
-      </div>
+    <div className="flex items-center gap-2 text-xs">
 
-      <p className="mt-4 text-2xl font-bold">
-        {value}
-      </p>
+      <CheckCircle2
+        size={14}
+        className="text-[#4CAF2F]"
+      />
 
-      <p className="text-xs text-gray-500">{subtitle}</p>
-    </div>
-  );
-}
+      {text}
 
-function Achievement({ icon, title }) {
-  return (
-    <div className="rounded-lg border bg-green-50 p-3 text-center">
-      <div className="flex justify-center text-green-600">
-        {icon}
-      </div>
-
-      <p className="mt-2 text-xs font-bold">{title}</p>
     </div>
   );
 }
