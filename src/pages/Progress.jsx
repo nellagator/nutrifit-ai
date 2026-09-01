@@ -1,202 +1,534 @@
-import { useState } from "react";
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
 
 import {
-  Bot,
-  Send,
-  CheckCircle2,
+  TrendingDown,
+  Dumbbell,
+  Flame,
+  Footprints,
+  Target,
+  Trophy,
 } from "lucide-react";
 
 import DashboardLayout from "../components/DashboardLayout";
 
-export default function AICoach() {
-  const [message, setMessage] = useState("");
-
-  const [messages, setMessages] = useState([
-    {
-      type: "ai",
-      text: "Hi John! 👋 How can I help you today?",
-    },
-    {
-      type: "user",
-      text: "What should I eat after my workout?",
-    },
-    {
-      type: "ai",
-      text: "A meal with protein and carbohydrates would be a great choice after your workout.",
-    },
-  ]);
-
-  const sendMessage = () => {
-    if (!message.trim()) return;
-
-    setMessages((current) => [
-      ...current,
-      {
-        type: "user",
-        text: message,
-      },
-      {
-        type: "ai",
-        text: "That's a great question! I'll help you make a healthy choice based on your goals.",
-      },
-    ]);
-
-    setMessage("");
-  };
-
+export default function Progress() {
   return (
     <DashboardLayout>
+      {/* ============================================================
+          PAGE HEADER
+      ============================================================ */}
 
-      <div className="mx-auto flex h-[calc(100vh-150px)] max-w-4xl flex-col rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-[#222222]">
+      <div className="mb-5">
+        <h1 className="text-2xl font-bold">
+          Progress
+        </h1>
 
-        {/* ===================================================
-            CHAT HEADER
-        =================================================== */}
+        <p className="mt-1 text-sm text-gray-500">
+          Track your fitness journey and see how far you've come.
+        </p>
+      </div>
 
-        <div className="flex items-center gap-3 border-b border-gray-200 p-4 dark:border-gray-700">
+      {/* ============================================================
+          SUMMARY CARDS
+      ============================================================ */}
 
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#dcffcc] text-[#4CAF2F]">
-            <Bot size={22} />
+      <div className="grid grid-cols-4 gap-3">
+
+        {/* Weight */}
+
+        <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-colors dark:border-gray-700 dark:bg-[#222222]">
+
+          <div className="flex items-center gap-2">
+            <TrendingDown
+              size={20}
+              className="text-green-600"
+            />
+
+            <span className="text-xs font-semibold">
+              Weight
+            </span>
           </div>
 
-          <div>
-
-            <h2 className="text-sm font-bold">
-              NutriFit AI
-            </h2>
-
-            <p className="text-[10px] text-gray-500">
-              Your personal nutrition coach
-            </p>
-
+          <div className="mt-4">
+            <span className="text-2xl font-bold">
+              70 kg
+            </span>
           </div>
 
+          <p className="mt-1 text-xs font-semibold text-green-600">
+            ▼ 2.5 kg
+          </p>
+
+          <p className="mt-1 text-[10px] text-gray-500">
+            Since last month
+          </p>
         </div>
 
-        {/* ===================================================
-            CHAT MESSAGES
-        =================================================== */}
+        {/* Workouts */}
 
-        <div className="flex-1 space-y-4 overflow-y-auto p-5">
+        <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-colors dark:border-gray-700 dark:bg-[#222222]">
 
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`
-                flex
-                ${
-                  message.type === "user"
-                    ? "justify-end"
-                    : "justify-start"
-                }
-              `}
+          <div className="flex items-center gap-2">
+            <Dumbbell
+              size={20}
+              className="text-[#4CAF2F]"
+            />
+
+            <span className="text-xs font-semibold">
+              Workouts
+            </span>
+          </div>
+
+          <div className="mt-4">
+            <span className="text-2xl font-bold">
+              18
+            </span>
+
+            <span className="ml-1 text-xs text-gray-500">
+              sessions
+            </span>
+          </div>
+
+          <p className="mt-1 text-xs font-semibold text-green-600">
+            +4 this month
+          </p>
+
+          <p className="mt-1 text-[10px] text-gray-500">
+            Keep moving!
+          </p>
+        </div>
+
+        {/* Calories */}
+
+        <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-colors dark:border-gray-700 dark:bg-[#222222]">
+
+          <div className="flex items-center gap-2">
+            <Flame
+              size={20}
+              className="text-orange-400"
+            />
+
+            <span className="text-xs font-semibold">
+              Calories Burned
+            </span>
+          </div>
+
+          <div className="mt-4">
+            <span className="text-2xl font-bold">
+              12,480
+            </span>
+          </div>
+
+          <p className="mt-1 text-xs font-semibold text-green-600">
+            +8.4%
+          </p>
+
+          <p className="mt-1 text-[10px] text-gray-500">
+            Compared to last month
+          </p>
+        </div>
+
+        {/* Steps */}
+
+        <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-colors dark:border-gray-700 dark:bg-[#222222]">
+
+          <div className="flex items-center gap-2">
+            <Footprints
+              size={20}
+              className="text-green-600"
+            />
+
+            <span className="text-xs font-semibold">
+              Average Steps
+            </span>
+          </div>
+
+          <div className="mt-4">
+            <span className="text-2xl font-bold">
+              8,421
+            </span>
+          </div>
+
+          <p className="mt-1 text-xs font-semibold text-green-600">
+            84% of goal
+          </p>
+
+          <p className="mt-1 text-[10px] text-gray-500">
+            Daily average
+          </p>
+        </div>
+      </div>
+
+      {/* ============================================================
+          MAIN PROGRESS SECTION
+      ============================================================ */}
+
+      <div className="mt-3 grid grid-cols-2 gap-3">
+
+        {/* ==========================================================
+            WEIGHT PROGRESS
+        ========================================================== */}
+
+        <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-colors dark:border-gray-700 dark:bg-[#222222]">
+
+          <div className="flex items-center justify-between">
+
+            <div>
+              <h2 className="text-lg font-bold">
+                Weight Progress
+              </h2>
+
+              <p className="mt-1 text-[10px] text-gray-500">
+                Your weight changes over the past weeks
+              </p>
+            </div>
+
+            <div className="text-right">
+              <p className="text-xl font-bold">
+                70 kg
+              </p>
+
+              <p className="text-[10px] font-semibold text-green-600">
+                ▼ 2.5 kg
+              </p>
+            </div>
+
+          </div>
+
+          <div className="mt-4 h-[230px] w-full">
+
+            <ResponsiveContainer
+              width="100%"
+              height="100%"
             >
 
-              <div
-                className={`
-                  max-w-[70%]
-                  rounded-xl
-                  px-4
-                  py-3
-                  text-sm
-
-                  ${
-                    message.type === "user"
-                      ? "bg-[#4CAF2F] text-white"
-                      : "bg-gray-100 text-gray-700 dark:bg-[#333333] dark:text-gray-200"
-                  }
-                `}
+              <AreaChart
+                data={weightData}
+                margin={{
+                  top: 10,
+                  right: 10,
+                  left: 0,
+                  bottom: 0,
+                }}
               >
-                {message.text}
+
+                <CartesianGrid
+                  stroke="#e5e7eb"
+                  vertical={false}
+                />
+
+                <XAxis
+                  dataKey="week"
+                  tick={{
+                    fontSize: 9,
+                    fill: "#6b7280",
+                  }}
+                  axisLine={{
+                    stroke: "#9ca3af",
+                  }}
+                  tickLine={false}
+                />
+
+                <YAxis
+                  domain={[68, 74]}
+                  ticks={[
+                    68,
+                    70,
+                    72,
+                    74,
+                  ]}
+                  tick={{
+                    fontSize: 9,
+                    fill: "#6b7280",
+                  }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+
+                <Tooltip
+                  formatter={(value) => [
+                    `${value} kg`,
+                    "Weight",
+                  ]}
+                />
+
+                <Area
+                  type="monotone"
+                  dataKey="weight"
+                  stroke="#4CAF2F"
+                  strokeWidth={2}
+                  fill="#dcffcc"
+                  fillOpacity={0.8}
+                  dot={{
+                    r: 3,
+                    fill: "#4CAF2F",
+                    strokeWidth: 0,
+                  }}
+                  activeDot={{
+                    r: 5,
+                  }}
+                />
+
+              </AreaChart>
+
+            </ResponsiveContainer>
+
+          </div>
+        </section>
+
+        {/* ==========================================================
+            WORKOUT PROGRESS
+        ========================================================== */}
+
+        <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-colors dark:border-gray-700 dark:bg-[#222222]">
+
+          <div className="flex items-center justify-between">
+
+            <div>
+              <h2 className="text-lg font-bold">
+                Workout Progress
+              </h2>
+
+              <p className="mt-1 text-[10px] text-gray-500">
+                Your weekly workout activity
+              </p>
+            </div>
+
+            <Dumbbell
+              size={22}
+              className="text-[#4CAF2F]"
+            />
+
+          </div>
+
+          <div className="mt-5 space-y-4">
+
+            <ProgressBar
+              label="Strength Training"
+              value="75%"
+              width="75%"
+            />
+
+            <ProgressBar
+              label="Cardio"
+              value="60%"
+              width="60%"
+            />
+
+            <ProgressBar
+              label="Flexibility"
+              value="45%"
+              width="45%"
+            />
+
+            <ProgressBar
+              label="Endurance"
+              value="70%"
+              width="70%"
+            />
+
+          </div>
+
+          {/* Weekly total */}
+
+          <div className="mt-6 rounded-lg bg-[#f0faeb] p-4 dark:bg-[#2c3a28]">
+
+            <div className="flex items-center gap-3">
+
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#dcffcc] dark:bg-[#394d32]">
+
+                <Target
+                  size={20}
+                  className="text-[#4CAF2F]"
+                />
+
+              </div>
+
+              <div>
+                <p className="text-sm font-bold">
+                  Weekly Goal
+                </p>
+
+                <p className="text-[10px] text-gray-500">
+                  4 of 5 workouts completed
+                </p>
               </div>
 
             </div>
-          ))}
 
-          {/* Example recommendation */}
+            <div className="mt-3 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
 
-          <div className="max-w-md rounded-lg bg-[#f0faeb] p-4 dark:bg-[#253522]">
-
-            <p className="text-xs font-bold text-[#4CAF2F]">
-              Suggested after-workout meal
-            </p>
-
-            <div className="mt-3 space-y-2">
-
-              <Recommendation text="Grilled chicken" />
-              <Recommendation text="Brown rice" />
-              <Recommendation text="Vegetables" />
-              <Recommendation text="Water" />
+              <div className="h-2 w-[80%] rounded-full bg-[#4CAF2F]" />
 
             </div>
 
           </div>
+        </section>
+      </div>
 
-        </div>
+      {/* ============================================================
+          ACHIEVEMENTS
+      ============================================================ */}
 
-        {/* ===================================================
-            MESSAGE INPUT
-        =================================================== */}
+      <section className="mt-3 rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-colors dark:border-gray-700 dark:bg-[#222222]">
 
-        <div className="border-t border-gray-200 p-4 dark:border-gray-700">
+        <div className="flex items-center gap-2">
 
-          <div className="flex items-center gap-2 rounded-full border border-gray-300 px-4 py-2 dark:border-gray-600">
+          <Trophy
+            size={21}
+            className="text-orange-400"
+          />
 
-            <input
-              type="text"
-              value={message}
-              onChange={(event) =>
-                setMessage(event.target.value)
-              }
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  sendMessage();
-                }
-              }}
-              placeholder="Type your message..."
-              className="
-                flex-1
-                bg-transparent
-                text-sm
-                outline-none
-              "
-            />
+          <div>
+            <h2 className="text-lg font-bold">
+              Achievements
+            </h2>
 
-            <button
-              type="button"
-              onClick={sendMessage}
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-[#4CAF2F] text-white"
-            >
-              <Send size={15} />
-            </button>
-
+            <p className="text-[10px] text-gray-500">
+              Milestones you've reached
+            </p>
           </div>
 
         </div>
 
-      </div>
+        <div className="mt-4 grid grid-cols-4 gap-3">
 
+          <Achievement
+            title="7 Day Streak"
+            description="Stayed active for 7 days"
+            icon="🔥"
+          />
+
+          <Achievement
+            title="10K Steps"
+            description="Reached 10,000 steps"
+            icon="👟"
+          />
+
+          <Achievement
+            title="First Workout"
+            description="Completed your first workout"
+            icon="💪"
+          />
+
+          <Achievement
+            title="Goal Crusher"
+            description="Reached your weekly goal"
+            icon="🏆"
+          />
+
+        </div>
+      </section>
     </DashboardLayout>
   );
 }
 
-/*
-============================================================
-RECOMMENDATION
-============================================================
-*/
+/* =================================================================
+   WEIGHT DATA
+================================================================= */
 
-function Recommendation({ text }) {
+const weightData = [
+  {
+    week: "Week 1",
+    weight: 72.5,
+  },
+  {
+    week: "Week 2",
+    weight: 72,
+  },
+  {
+    week: "Week 3",
+    weight: 71.5,
+  },
+  {
+    week: "Week 4",
+    weight: 71,
+  },
+  {
+    week: "Week 5",
+    weight: 70.5,
+  },
+  {
+    week: "Week 6",
+    weight: 70,
+  },
+];
+
+/* =================================================================
+   PROGRESS BAR
+================================================================= */
+
+function ProgressBar({
+  label,
+  value,
+  width,
+}) {
   return (
-    <div className="flex items-center gap-2 text-xs">
+    <div>
 
-      <CheckCircle2
-        size={14}
-        className="text-[#4CAF2F]"
-      />
+      <div className="flex items-center justify-between">
 
-      {text}
+        <span className="text-xs font-semibold">
+          {label}
+        </span>
 
+        <span className="text-[10px] font-semibold text-[#4CAF2F]">
+          {value}
+        </span>
+
+      </div>
+
+      <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
+
+        <div
+          className="h-2 rounded-full bg-[#4CAF2F]"
+          style={{
+            width,
+          }}
+        />
+
+      </div>
+    </div>
+  );
+}
+
+/* =================================================================
+   ACHIEVEMENT
+================================================================= */
+
+function Achievement({
+  title,
+  description,
+  icon,
+}) {
+  return (
+    <div className="rounded-lg border border-gray-200 p-3 transition-colors dark:border-gray-700">
+
+      <div className="flex items-center gap-3">
+
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#f0faeb] text-lg dark:bg-[#2c3a28]">
+          {icon}
+        </div>
+
+        <div>
+          <p className="text-xs font-bold">
+            {title}
+          </p>
+
+          <p className="mt-1 text-[9px] text-gray-500">
+            {description}
+          </p>
+        </div>
+
+      </div>
     </div>
   );
 }

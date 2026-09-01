@@ -1,373 +1,497 @@
-import {
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-} from "recharts";
+import { useState } from "react";
 
 import {
-  Flame,
-  Footprints,
-  Dumbbell,
-  Trophy,
+  User,
+  Mail,
+  Calendar,
+  Ruler,
   Weight,
+  Target,
+  Activity,
+  Save,
+  Edit3,
 } from "lucide-react";
 
 import DashboardLayout from "../components/DashboardLayout";
 
-export default function Progress() {
+export default function Profile() {
+  const [editing, setEditing] = useState(false);
+
+  const [profile, setProfile] = useState({
+    firstName: "John",
+    lastName: "Lim",
+    email: "john@example.com",
+    age: "21",
+    height: "170",
+    weight: "70",
+    goal: "Lose Weight",
+    activity: "Moderately Active",
+  });
+
+  const [saved, setSaved] = useState(false);
+
+  // ================================================================
+  // HANDLE INPUT
+  // ================================================================
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    setProfile((current) => ({
+      ...current,
+      [name]: value,
+    }));
+
+    setSaved(false);
+  };
+
+  // ================================================================
+  // SAVE PROFILE
+  // ================================================================
+
+  const handleSave = () => {
+    setEditing(false);
+    setSaved(true);
+
+    setTimeout(() => {
+      setSaved(false);
+    }, 2500);
+  };
+
   return (
     <DashboardLayout>
+      {/* ============================================================
+          PAGE HEADER
+      ============================================================ */}
 
-      {/* =====================================================
-          THIS WEEK
-      ===================================================== */}
+      <div className="mb-5 flex items-center justify-between">
 
-      <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-[#222222]">
+        <div>
+          <h1 className="text-2xl font-bold">
+            Profile
+          </h1>
 
-        <h2 className="text-lg font-bold">
-          My Progress
-        </h2>
-
-        <div className="mt-4 grid grid-cols-4 gap-3">
-
-          <ProgressCard
-            title="Calories"
-            value="13,850"
-            subtitle="kcal this week"
-          />
-
-          <ProgressCard
-            title="Workouts"
-            value="5"
-            subtitle="sessions"
-          />
-
-          <ProgressCard
-            title="Steps"
-            value="58,420"
-            subtitle="steps"
-          />
-
-          <ProgressCard
-            title="Streak"
-            value="7"
-            subtitle="days"
-          />
-
+          <p className="mt-1 text-sm text-gray-500">
+            Manage your personal information and fitness goals.
+          </p>
         </div>
 
-      </section>
+        {!editing ? (
+          <button
+            type="button"
+            onClick={() => setEditing(true)}
+            className="flex items-center gap-2 rounded-lg bg-[#4CAF2F] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#3d9715]"
+          >
+            <Edit3 size={15} />
 
-      {/* =====================================================
-          ANALYTICS
-      ===================================================== */}
+            Edit Profile
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={handleSave}
+            className="flex items-center gap-2 rounded-lg bg-[#4CAF2F] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#3d9715]"
+          >
+            <Save size={15} />
 
-      <div className="mt-4 grid grid-cols-2 gap-4">
+            Save Changes
+          </button>
+        )}
 
-        {/* ===================================================
-            MACRONUTRIENTS
-        =================================================== */}
+      </div>
 
-        <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-[#222222]">
+      {/* ============================================================
+          SAVED MESSAGE
+      ============================================================ */}
 
-          <h3 className="text-sm font-bold">
-            Macronutrient Distribution
-          </h3>
+      {saved && (
+        <div className="mb-4 rounded-lg border border-green-200 bg-[#f0faeb] p-3 text-center text-xs font-semibold text-[#4CAF2F] dark:border-green-900 dark:bg-[#263322]">
+          Profile updated successfully! ✓
+        </div>
+      )}
 
-          <div className="mt-5 flex items-center justify-center">
+      {/* ============================================================
+          PROFILE CONTENT
+      ============================================================ */}
 
-            <div className="relative flex h-36 w-36 items-center justify-center rounded-full border-[25px] border-green-500">
+      <div className="grid grid-cols-3 gap-3">
 
-              <div className="absolute inset-0 rounded-full border-[25px] border-blue-400 border-r-transparent border-b-transparent" />
+        {/* ==========================================================
+            PROFILE CARD
+        ========================================================== */}
 
-              <div className="absolute inset-0 rounded-full border-[25px] border-orange-400 border-l-transparent border-b-transparent" />
+        <section className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition-colors dark:border-gray-700 dark:bg-[#222222]">
 
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-xs font-bold dark:bg-[#222222]">
-                100%
-              </div>
+          <div className="flex flex-col items-center">
 
-            </div>
+            {/* Profile icon */}
 
-          </div>
+            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700">
 
-          <div className="mt-5 grid grid-cols-3 gap-3 text-center text-xs">
-
-            <div>
-              <p className="font-bold text-green-500">
-                Protein
-              </p>
-              <p className="text-gray-500">
-                40%
-              </p>
-            </div>
-
-            <div>
-              <p className="font-bold text-blue-500">
-                Carbs
-              </p>
-              <p className="text-gray-500">
-                45%
-              </p>
-            </div>
-
-            <div>
-              <p className="font-bold text-orange-400">
-                Fat
-              </p>
-              <p className="text-gray-500">
-                15%
-              </p>
-            </div>
-
-          </div>
-
-        </section>
-
-        {/* ===================================================
-            WEIGHT PROGRESS
-        =================================================== */}
-
-        <section className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-[#222222]">
-
-          <div className="flex items-center gap-2">
-
-            <Weight
-              size={20}
-              className="text-[#4CAF2F]"
-            />
-
-            <h3 className="text-sm font-bold">
-              Weight Progress
-            </h3>
-
-          </div>
-
-          <div className="mt-6 flex items-end justify-between">
-
-            <div>
-
-              <p className="text-3xl font-bold">
-                70 kg
-              </p>
-
-              <p className="mt-1 text-xs text-gray-500">
-                Current weight
-              </p>
+              <User
+                size={45}
+                className="text-gray-500"
+              />
 
             </div>
 
-            <p className="text-sm font-bold text-green-600">
-              ▼ 2.5 kg
+            <h2 className="mt-4 text-lg font-bold">
+              {profile.firstName} {profile.lastName}
+            </h2>
+
+            <p className="mt-1 text-xs text-gray-500">
+              NutriFit AI Member
             </p>
 
           </div>
 
-          <div className="mt-8 h-2 rounded-full bg-gray-200">
+          <div className="mt-6 space-y-3">
 
-            <div className="h-2 w-[70%] rounded-full bg-[#4CAF2F]" />
+            <ProfileInfo
+              icon={Mail}
+              label="Email"
+              value={profile.email}
+            />
+
+            <ProfileInfo
+              icon={Calendar}
+              label="Age"
+              value={`${profile.age} years old`}
+            />
+
+            <ProfileInfo
+              icon={Ruler}
+              label="Height"
+              value={`${profile.height} cm`}
+            />
+
+            <ProfileInfo
+              icon={Weight}
+              label="Weight"
+              value={`${profile.weight} kg`}
+            />
 
           </div>
-
-          <div className="mt-2 flex justify-between text-[10px] text-gray-500">
-
-            <span>
-              Starting: 72.5 kg
-            </span>
-
-            <span>
-              Goal: 65 kg
-            </span>
-
-          </div>
-
         </section>
 
-      </div>
+        {/* ==========================================================
+            PERSONAL INFORMATION
+        ========================================================== */}
 
-      {/* =====================================================
-          CALORIE TREND
-      ===================================================== */}
+        <section className="col-span-2 rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition-colors dark:border-gray-700 dark:bg-[#222222]">
 
-      <section className="mt-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-[#222222]">
+          <h2 className="text-lg font-bold">
+            Personal Information
+          </h2>
 
-        <div className="flex items-center justify-between">
-
-          <h3 className="text-sm font-bold">
-            Calories Trend
-          </h3>
-
-          <p className="text-xs text-gray-500">
-            Average: 1718 kcal
+          <p className="mt-1 text-xs text-gray-500">
+            Your basic personal details
           </p>
 
+          <div className="mt-5 grid grid-cols-2 gap-4">
+
+            {/* First name */}
+
+            <InputField
+              label="First Name"
+              name="firstName"
+              value={profile.firstName}
+              onChange={handleChange}
+              editing={editing}
+            />
+
+            {/* Last name */}
+
+            <InputField
+              label="Last Name"
+              name="lastName"
+              value={profile.lastName}
+              onChange={handleChange}
+              editing={editing}
+            />
+
+            {/* Email */}
+
+            <InputField
+              label="Email"
+              name="email"
+              value={profile.email}
+              onChange={handleChange}
+              editing={editing}
+              type="email"
+            />
+
+            {/* Age */}
+
+            <InputField
+              label="Age"
+              name="age"
+              value={profile.age}
+              onChange={handleChange}
+              editing={editing}
+              type="number"
+            />
+
+            {/* Height */}
+
+            <InputField
+              label="Height (cm)"
+              name="height"
+              value={profile.height}
+              onChange={handleChange}
+              editing={editing}
+              type="number"
+            />
+
+            {/* Weight */}
+
+            <InputField
+              label="Weight (kg)"
+              name="weight"
+              value={profile.weight}
+              onChange={handleChange}
+              editing={editing}
+              type="number"
+            />
+
+          </div>
+        </section>
+      </div>
+
+      {/* ============================================================
+          FITNESS GOALS
+      ============================================================ */}
+
+      <section className="mt-3 rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition-colors dark:border-gray-700 dark:bg-[#222222]">
+
+        <div className="flex items-center gap-2">
+
+          <Target
+            size={21}
+            className="text-[#4CAF2F]"
+          />
+
+          <div>
+            <h2 className="text-lg font-bold">
+              Fitness Goals
+            </h2>
+
+            <p className="text-xs text-gray-500">
+              Customize your fitness preferences
+            </p>
+          </div>
+
         </div>
 
-        <div className="mt-3 h-48">
+        <div className="mt-5 grid grid-cols-2 gap-4">
 
-          <ResponsiveContainer
-            width="100%"
-            height="100%"
-          >
+          {/* Goal */}
 
-            <AreaChart data={calorieData}>
+          <div>
 
-              <CartesianGrid
-                stroke="#e5e7eb"
-                vertical={false}
-              />
+            <label className="text-xs font-semibold">
+              Primary Goal
+            </label>
 
-              <XAxis
-                dataKey="day"
-                tick={{
-                  fontSize: 10,
-                  fill: "#64748b",
-                }}
-                axisLine={false}
-                tickLine={false}
-              />
+            <select
+              name="goal"
+              value={profile.goal}
+              onChange={handleChange}
+              disabled={!editing}
+              className="mt-2 w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-[#4CAF2F] disabled:cursor-not-allowed disabled:bg-gray-100 dark:border-gray-700 dark:bg-[#181818] dark:disabled:bg-[#333333]"
+            >
+              <option value="Lose Weight">
+                Lose Weight
+              </option>
 
-              <YAxis
-                tick={{
-                  fontSize: 10,
-                  fill: "#64748b",
-                }}
-                axisLine={false}
-                tickLine={false}
-              />
+              <option value="Maintain Weight">
+                Maintain Weight
+              </option>
 
-              <Tooltip />
+              <option value="Gain Muscle">
+                Gain Muscle
+              </option>
 
-              <Area
-                type="monotone"
-                dataKey="calories"
-                stroke="#00d91c"
-                fill="#c9f9ce"
-                strokeWidth={2}
-              />
+              <option value="Improve Fitness">
+                Improve Fitness
+              </option>
+            </select>
 
-            </AreaChart>
+          </div>
 
-          </ResponsiveContainer>
+          {/* Activity */}
+
+          <div>
+
+            <label className="text-xs font-semibold">
+              Activity Level
+            </label>
+
+            <select
+              name="activity"
+              value={profile.activity}
+              onChange={handleChange}
+              disabled={!editing}
+              className="mt-2 w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-[#4CAF2F] disabled:cursor-not-allowed disabled:bg-gray-100 dark:border-gray-700 dark:bg-[#181818] dark:disabled:bg-[#333333]"
+            >
+              <option value="Sedentary">
+                Sedentary
+              </option>
+
+              <option value="Lightly Active">
+                Lightly Active
+              </option>
+
+              <option value="Moderately Active">
+                Moderately Active
+              </option>
+
+              <option value="Very Active">
+                Very Active
+              </option>
+            </select>
+
+          </div>
 
         </div>
-
       </section>
 
-      {/* =====================================================
-          ACHIEVEMENTS
-      ===================================================== */}
+      {/* ============================================================
+          ACCOUNT SUMMARY
+      ============================================================ */}
 
-      <section className="mt-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-[#222222]">
+      <section className="mt-3 rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition-colors dark:border-gray-700 dark:bg-[#222222]">
 
-        <h3 className="text-sm font-bold">
-          Achievements
-        </h3>
+        <h2 className="text-lg font-bold">
+          Fitness Summary
+        </h2>
 
-        <div className="mt-3 grid grid-cols-4 gap-3">
+        <div className="mt-4 grid grid-cols-3 gap-3">
 
-          <Achievement
-            icon={<Flame />}
-            title="7 Day Streak"
+          <SummaryCard
+            icon={Target}
+            title="Current Goal"
+            value={profile.goal}
           />
 
-          <Achievement
-            icon={<Trophy />}
-            title="Healthy Eater"
+          <SummaryCard
+            icon={Activity}
+            title="Activity Level"
+            value={profile.activity}
           />
 
-          <Achievement
-            icon={<Footprints />}
-            title="Daily Steps"
-          />
-
-          <Achievement
-            icon={<Dumbbell />}
-            title="Workout Warrior"
+          <SummaryCard
+            icon={Weight}
+            title="Current Weight"
+            value={`${profile.weight} kg`}
           />
 
         </div>
-
       </section>
-
     </DashboardLayout>
   );
 }
 
-/*
-============================================================
-PROGRESS CARD
-============================================================
-*/
+/* =================================================================
+   PROFILE INFO
+================================================================= */
 
-function ProgressCard({
-  title,
+function ProfileInfo({
+  icon: Icon,
+  label,
   value,
-  subtitle,
 }) {
   return (
-    <div className="rounded-lg border border-gray-200 p-3 dark:border-gray-700">
+    <div className="flex items-center gap-3 rounded-lg border border-gray-200 p-3 dark:border-gray-700">
 
-      <p className="text-xs font-semibold text-gray-500">
-        {title}
-      </p>
+      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#f0faeb] dark:bg-[#2c3a28]">
 
-      <p className="mt-2 text-xl font-bold">
+        <Icon
+          size={15}
+          className="text-[#4CAF2F]"
+        />
+
+      </div>
+
+      <div>
+        <p className="text-[9px] text-gray-500">
+          {label}
+        </p>
+
+        <p className="text-xs font-semibold">
+          {value}
+        </p>
+      </div>
+
+    </div>
+  );
+}
+
+/* =================================================================
+   INPUT FIELD
+================================================================= */
+
+function InputField({
+  label,
+  name,
+  value,
+  onChange,
+  editing,
+  type = "text",
+}) {
+  return (
+    <div>
+
+      <label
+        htmlFor={name}
+        className="text-xs font-semibold"
+      >
+        {label}
+      </label>
+
+      <input
+        id={name}
+        name={name}
+        type={type}
+        value={value}
+        onChange={onChange}
+        disabled={!editing}
+        className="mt-2 w-full rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-[#4CAF2F] disabled:cursor-not-allowed disabled:bg-gray-100 dark:border-gray-700 dark:bg-[#181818] dark:disabled:bg-[#333333]"
+      />
+
+    </div>
+  );
+}
+
+/* =================================================================
+   SUMMARY CARD
+================================================================= */
+
+function SummaryCard({
+  icon: Icon,
+  title,
+  value,
+}) {
+  return (
+    <div className="rounded-lg border border-gray-200 p-4 dark:border-gray-700">
+
+      <div className="flex items-center gap-2">
+
+        <Icon
+          size={18}
+          className="text-[#4CAF2F]"
+        />
+
+        <span className="text-xs font-semibold">
+          {title}
+        </span>
+
+      </div>
+
+      <p className="mt-3 text-sm font-bold">
         {value}
       </p>
 
-      <p className="mt-1 text-[10px] text-gray-500">
-        {subtitle}
-      </p>
-
     </div>
   );
 }
-
-/*
-============================================================
-ACHIEVEMENT
-============================================================
-*/
-
-function Achievement({
-  icon,
-  title,
-}) {
-  return (
-    <div className="flex flex-col items-center rounded-lg border border-gray-200 p-4 text-center dark:border-gray-700">
-
-      <div className="text-[#4CAF2F]">
-        {icon}
-      </div>
-
-      <p className="mt-2 text-xs font-semibold">
-        {title}
-      </p>
-
-      <p className="mt-1 text-[9px] text-gray-500">
-        Achievement unlocked
-      </p>
-
-    </div>
-  );
-}
-
-/*
-============================================================
-CALORIE DATA
-============================================================
-*/
-
-const calorieData = [
-  { day: "Mon", calories: 1550 },
-  { day: "Tue", calories: 1720 },
-  { day: "Wed", calories: 1600 },
-  { day: "Thu", calories: 1710 },
-  { day: "Fri", calories: 1450 },
-  { day: "Sat", calories: 1900 },
-  { day: "Sun", calories: 1550 },
-];

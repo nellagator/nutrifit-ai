@@ -5,6 +5,10 @@ import {
   Navigate,
 } from "react-router-dom";
 
+// ============================================================
+// AUTHENTICATION PAGES
+// ============================================================
+
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -13,6 +17,10 @@ import VerifyRegistration from "./pages/VerifyRegistration";
 import Verified from "./pages/Verified";
 import Unverified from "./pages/Unverified";
 
+// ============================================================
+// APPLICATION PAGES
+// ============================================================
+
 import Dashboard from "./pages/Dashboard";
 import FoodScanner from "./pages/FoodScanner";
 import Workouts from "./pages/Workouts";
@@ -20,14 +28,16 @@ import AICoach from "./pages/AICoach";
 import Progress from "./pages/Progress";
 import Profile from "./pages/Profile";
 
+// ============================================================
+// THEME
+// ============================================================
+
 import { ThemeProvider } from "./context/ThemeContext";
 
 export default function App() {
   return (
     <ThemeProvider>
-
       <BrowserRouter>
-
         <Routes>
 
           {/* ==================================================
@@ -128,9 +138,7 @@ export default function App() {
           />
 
         </Routes>
-
       </BrowserRouter>
-
     </ThemeProvider>
   );
 }
